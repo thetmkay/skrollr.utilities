@@ -1,0 +1,23 @@
+{
+  "name": "skrollr utilities",
+  "version": "0.0.0",
+  "description": "utilities for using skrollr",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thetmkay/skrollr.utilities.git"
+  },
+  "author": "thetmkay@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thetmkay/skrollr.utilities/issues"
+  },
+  "homepage": "https://github.com/thetmkay/skrollr-utilities",
+  "dependencies": {
+    "express": "^4.2.0"
+  }
+}
