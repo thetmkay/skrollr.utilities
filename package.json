@@ -1,7 +1,7 @@
 {
-  "name": "skrollr utilities",
+  "name": "skrollr.utilities",
   "version": "0.0.0",
-  "description": "utilities for using skrollr",
+  "description": "utilities to make Skrollr less painful",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,8 +16,8 @@
   "bugs": {
     "url": "https://github.com/thetmkay/skrollr.utilities/issues"
   },
-  "homepage": "https://github.com/thetmkay/skrollr-utilities",
+  "homepage": "https://github.com/thetmkay/skrollr.utilities",
   "dependencies": {
-    "express": "^4.2.0"
+    "express": "^4.3.2"
   }
 }
