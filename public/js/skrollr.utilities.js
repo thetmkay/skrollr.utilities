@@ -14,8 +14,9 @@ var SkrollrUtilities = (function($) {
 
 		helper.addUnits = function(arr,unit) {
 			var suffixed_arr = [];
-			for(var elem in arr) {
-				var regex = "^.*unit$";
+			for(var i in arr) {
+				var elem = arr[i],
+					regex = "^.*unit$";
 				regex.replace("unit", unit);
 				regex = new RegExp(regex, "i");
 
