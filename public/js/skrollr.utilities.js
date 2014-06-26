@@ -69,8 +69,11 @@ var SkrollrUtilities = (function($) {
 
 //===Internal String Builders
 
-	function TransformBuilder() {
-		this.trans_string = "transform:";
+	function TransformBuilder(easing) {
+		if(!easing)
+			this.trans_string = "transform:";
+		else
+			this.trans_string = "transform[" + easing + "]:";
 	}
 
 	TransformBuilder.prototype = {
