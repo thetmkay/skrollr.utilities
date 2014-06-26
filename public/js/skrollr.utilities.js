@@ -84,7 +84,10 @@ var SkrollrUtilities = (function($) {
 			this.trans_string += " translate(" + vector[0] + "px," + vector[1] + "px)";
 		},
 		"rotateX": function(rotate_val) {
-			this.trans_string += " rotateX(" + rotate_val + "deg)";
+			//change to css
+			if(!$('body').hasClass('no-csstransforms3d')) {
+				this.trans_string += " rotateX(" + rotate_val + "deg)";
+			}
 		},
 		finish: function() {
 
