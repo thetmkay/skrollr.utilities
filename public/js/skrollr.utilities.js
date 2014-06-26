@@ -83,7 +83,9 @@ var SkrollrUtilities = (function($) {
 		translate: function(vector) {
 			this.trans_string += " translate(" + vector[0] + "px," + vector[1] + "px)";
 		},
-
+		"rotateX": function(rotate_val) {
+			this.trans_string += " rotateX(" + rotate_val + "deg)";
+		},
 		finish: function() {
 
 			//check to see if there were any transformations
@@ -121,7 +123,7 @@ var SkrollrUtilities = (function($) {
 			if(/^\w+\[\w+\]$/.test(prop)) {
 				console.log("easing is true for " + prop);
 			}
-			switch(prop) {
+			switch(prop.toLowerCase()) {
 				case "translate":
 					transform.translate(animation[prop]);
 					break;
@@ -130,6 +132,9 @@ var SkrollrUtilities = (function($) {
 					break;
 				case "rotate":
 					transform.rotate(animation[prop]);
+					break;
+				case "rotatex":
+					transform.rotateX(animation[prop]);
 					break;
 				default:
 					anim_string += css(prop, animation[prop]);
