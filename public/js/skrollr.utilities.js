@@ -69,11 +69,8 @@ var SkrollrUtilities = (function($) {
 
 //===Internal String Builders
 
-	function TransformBuilder(easing) {
-		if(!easing)
-			this.trans_string = "transform:";
-		else
-			this.trans_string = "transform[" + easing + "]:";
+	function TransformBuilder() {
+		this.trans_string = "transform:";
 	}
 
 	TransformBuilder.prototype = {
@@ -86,6 +83,7 @@ var SkrollrUtilities = (function($) {
 		translate: function(vector) {
 			this.trans_string += " translate(" + vector[0] + "px," + vector[1] + "px)";
 		},
+
 		finish: function() {
 
 			//check to see if there were any transformations
@@ -108,10 +106,10 @@ var SkrollrUtilities = (function($) {
 	function addKeyframe(marker, animation) {
 
 		//check the marker is valid (allow non data-tagged input)
-		if(/^\d*$/.test(marker)) {
+		if(/^(([\d]*||top||bottom||center)\-?){1,3}$/.test(marker)) {
 			marker = "data-" + marker;
 		}
-		if(!(/^data\-\d*$/.test(marker))) {
+		if(!(/^data\-(([\d]*||top||bottom||center)\-?){1,3}$/.test(marker))) {
 			console.log(marker);
 			console.error("not valid marker");
 			return;
@@ -120,7 +118,9 @@ var SkrollrUtilities = (function($) {
 			anim_string = "";
 
 		for(var prop in animation) {
-
+			if(/^\w+\[\w+\]$/.test(prop)) {
+				console.log("easing is true for " + prop);
+			}
 			switch(prop) {
 				case "translate":
 					transform.translate(animation[prop]);
