@@ -23,6 +23,7 @@
   ],
   "dependencies": {
     "skrollr": "~0.6.25",
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "skrollr.utilities": "~0.0.1"
   }
 }
