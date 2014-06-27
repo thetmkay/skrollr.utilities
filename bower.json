@@ -1,6 +1,6 @@
 {
   "name": "skrollr.utilities",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/thetmkay/skrollr.utilities",
   "authors": [
     "thetmkay <george@upstatement.com>"
@@ -14,7 +14,6 @@
     "scroll"
   ],
   "license": "MIT",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -23,6 +22,7 @@
     "tests"
   ],
   "dependencies": {
-    "skrollr": "~0.6.25"
+    "skrollr": "~0.6.25",
+    "jquery": "~2.1.1"
   }
 }
