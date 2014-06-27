@@ -131,8 +131,9 @@ var SkrollrUtilities = (function($) {
 				return "";
 			}
 
-			//always has to be the same order
-			this.transformations.sort();
+			//always has to be the same order (translate has to be first too)
+			//uncommented - might be better just to let the user decide.
+			// this.transformations.sort().reverse();
 			this.trans_string = this.transformations.join(" ");
 
 			if(this.easing) {
