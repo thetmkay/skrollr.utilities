@@ -55,7 +55,7 @@ var SkrollrUtilities = (function($) {
 		};
 
 		helper.keyframeHandlerFn = function(element, name, direction){
-				name = "data-" + name.substring(4);
+			name = "data-" + name.substring(4);
 			helper._eventHandlers.forEach(function(eventHandler, index) {
 				if(eventHandler.element === element && eventHandler.marker === name) {
 					eventHandler.callback(element,name,direction);
@@ -82,13 +82,17 @@ var SkrollrUtilities = (function($) {
 			this.transformations.push("scale(" + scalars[0] + "," + scalars[1] + ")");
 		},
 		scale3D: function(scalars) {
-			this.transformations.push("scale3d(" + scalars[0] + "," + scalars[1] + "," + scalars[2] + ")");
+			if(!$('body').hasClass('no-csstransforms3d')) {
+				this.transformations.push("scale3d(" + scalars[0] + "," + scalars[1] + "," + scalars[2] + ")");
+			}
 		},
 		translate: function(vector) {
 			this.transformations.push("translate(" + vector[0] + "px," + vector[1] + "px)");
 		},
 		translate3D: function(vector) {
-			this.transformations.push(" translate3d(" + vector[0] + "px," + vector[1] + "px," + vector[2]+"px)");
+			if(!$('body').hasClass('no-csstransforms3d')) {
+				this.transformations.push(" translate3d(" + vector[0] + "px," + vector[1] + "px," + vector[2]+"px)");
+			}
 		},
 		skew: function(skew_vals) {
 			this.transformations.push(" skew(" + skew_vals[0] + "deg," + skew_vals[1] + "deg)");
@@ -141,10 +145,10 @@ var SkrollrUtilities = (function($) {
 	function addKeyframe(marker, animation) {
 
 		//check the marker is valid (allow non data-tagged input)
-		if(/^(([\d]*||top||bottom||center)\-?){1,3}$/.test(marker)) {
+		if(/^(([\d]*||top||bottom||center||_offset)\-?){1,3}$/.test(marker)) {
 			marker = "data-" + marker;
 		}
-		if(!(/^data\-(([\d]*||top||bottom||center)\-?){1,3}$/.test(marker))) {
+		if(!(/^data\-(([\d]*||top||bottom||center||_offset)\-?){1,3}$/.test(marker))) {
 			console.log(marker);
 			console.error("not valid marker");
 			return;

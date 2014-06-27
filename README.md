@@ -1,7 +1,63 @@
 skrollr.utilities
 =================
 
-A small JS file to help use Skrollr. Removes the need to put inline HTML in order to use Skrollr, as well as helping with other features and quirks of Skrollr.
+A small JS file to help use Skrollr. Use JS instead of inline HTML in order to use Skrollr, as well as providing helper functions to deal with Skrollr syntax.
+
+Skrollr.Utilities will only translate JS into inline HTML defined by Skrollr syntax, it does not call nor (technically) depend on Skrollr in order to work.
+
+## Holistic Example
+
+Skrollr
+```html
+<div id="example" data-100-top-top="background-color[linear]:rgb(255,0,0); width: 100%; transform[quadratic]: rotateY(0deg)  translate3d(0px,0px,0px) scale3d(1,1,1);" data-50-center-center="background-color[linear]:rgb(0,0,255);width:50%;transform[quadratic]: rotateY(90deg)  translate3d(50px,50px,50px) scale3d(2,2,2);" data-emit-events="true"></div>
+```
+
+```javascript
+  var s = skrollr.init({
+    forceHeight: false,
+    keyframe: function(element,name,direction) {
+      if(element === $("#example")[0] && name === "data100TopTop") {
+        console.log("Red");
+      }
+      if(element === $("#example")[0] && name === "data50CenterCenter") {
+        console.log("Red");
+      }
+    }
+  });
+```
+
+Skrollr + Skrollr.Utilities
+
+```html
+<div id="example"></div>
+```
+
+```javascript
+  var util = SkrollrUtilities.getHelper();
+
+  $('#example').addKeyframes(["100-top-top", "data-50-center-center"], {
+    'background-color[linear]': [util.convertHex("FF0000"),util.convertHex("0000FF")],
+    'width':util.addUnits([100,50], '%'),
+    'rotateY':[0,90],
+    'scale3d':[[1,1,1],[2,2,2]],
+    'translate3d':[[0,0,0],[50,50,50]],
+    'easing': ['quadratic','quadratic']
+  });
+
+  util.onKeyframeEvent($("#example"), "data-100-top-top", function() {
+    console.log("Red");
+  });
+
+  util.onKeyframeEvent($("#example"), "data-50-center-center", function() {
+    console.log("Blue");
+  });
+
+  var s = skrollr.init({
+    forceHeight: false,
+    keyframe: util.keyframeHandlerFn
+  });
+```
+
 
 ## Dependencies
 
@@ -27,7 +83,7 @@ Add a skrollr keyframe at the specified marker to an element with the specified 
 
 ##### marker - *number* | *string*
 
-The scroll height that marks the key frame. **skrollr.utilities currently only supports absolute positioning in pixels**. Can be the pixel value, or optionally prefixed by `data-`
+The scroll height that marks the key frame. **skrollr.utilities currently supports absolute positioning in pixels and relative positioning (top, bottom, center)**. Can be the pixel value, or optionally prefixed by `data-`
 
 ##### animation - *object*
 
@@ -45,9 +101,23 @@ $('#example').addKeyframes(500, {
 	});
 ```
 
-For the transformations, please only add *unit-less* values, and for translate and scale, the values should *array xy-pairs*, as in [x,y]. The unit for `rotate` is `deg` and the unit for `translate` is `px`.
+For the transformations, please only add *unit-less* values, and for translate and scale, the values should *array xy-pairs*, as in [x,y]. The values for rotate and skew will be interpreted as `deg`, and translate and scale `px`.
 
-####
+Supported transformations:
+
+* scale
+* **scale3d**
+* rotate
+* **rotateX**
+* **rotateY**
+* **rotateZ**
+* translate
+* **translate3d**
+* skew
+
+**Note**: for the bolded attributes, they will only be added if a `no-csstransforms3d` value is NOT present on the `<html>` element (for those using Modernizr).
+
+To add easing to a transform, there is a special attribute `easing`. In order to add easing to any other attribute, specify the attribute as `attribute[easing]`. For example, `background-color[cubic]:'rgb(0,0,0)'`.
 
 ### addKeyframes(markers,animations)
 
@@ -57,7 +127,7 @@ Add a series of skrollr keyframes to an element.
 
 ##### markers - *array* (of *number* | *string*)
 
-A list of the markers for each keyframe. Although it does not have to be in a specific order, the order of this array has to match the order in which you define the animation properties. **skrollr.utilities currently only supports absolute positioning in pixels**. Can be the pixel value, or optionally prefixed by `data-`.
+A list of the markers for each keyframe. Although it does not have to be in a specific order, the order of this array has to match the order in which you define the animation properties. **skrollr.utilities currently supports absolute positioning in pixels and relative positioning (top, bottom, center)**. Can be the pixel value, or optionally prefixed by `data-`.
 
 ##### animations - *object*
 
@@ -72,12 +142,28 @@ $('#example').addKeyframes([500, 'data-800'], {
     translate: [[0,0],[10,10]],
     scale:[[1,1],[2,2]],
     rotate:[0,90],
-		'background-color': ['rgb(0,0,0)','rgb(255,255,255)',
+		'background-color': ['rgb(0,0,0)','rgb(255,255,255)'],
 		width: ['100%','50%']
 	});
 ```
 
-For the transformations, please only add *unit-less* values, and for translate and scale, the values should *array xy-pairs*, as in [x,y].
+For the transformations, please only add *unit-less* values, and for translate and scale, the values should *array xy-pairs*, as in [x,y]. The values for rotate and skew will be interpreted as `deg`, and translate `px`.
+
+Supported transformations:
+
+* scale
+* **scale3d**
+* rotate
+* **rotateX**
+* **rotateY**
+* **rotateZ**
+* translate
+* **translate3d**
+* skew
+
+**Note**: for the bolded attributes, they will only be added if a `no-csstransforms3d` value is NOT present on the `<html>` element (for those using Modernizr).
+
+To add easing to a transform, there is a special attribute `easing`. In order to add easing to any other attribute, specify the attribute as `attribute[easing]`. For example, `background-color[linear]:['rgb(0,0,0)','rgb(255,255,255)']`.
 
 #### SkrollrUtilities
 
