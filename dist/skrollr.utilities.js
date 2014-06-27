@@ -12,6 +12,7 @@ var SkrollrUtilities = (function($) {
 			_eventHandlers: []
 		};
 
+		//suffix units on to an array of values (that may or may not be suffixed with unit already)
 		helper.addUnits = function(arr,unit) {
 			var suffixed_arr = [];
 			for(var i in arr) {
@@ -27,6 +28,7 @@ var SkrollrUtilities = (function($) {
 			return suffixed_arr;
 		};
 
+		//convert hex code to rgb. skrollr requires rgb (or hsl) for interpolation
 		helper.convertHex = function(hex, alpha) {
 			var hex_split = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
 			if(!alpha) {
@@ -35,11 +37,16 @@ var SkrollrUtilities = (function($) {
 			return "rgba(" + parseInt(hex_split[1],16) +"," + parseInt(hex_split[2],16) +"," + parseInt(hex_split[3],16) +"," + alpha + ")";
 		};
 
+		//basically get the scrollheight of an element (shorthand jquery)
 		helper.getPos = function(selector) {
 			if($(selector).length === 1)
 				return Math.floor($(selector).offset().top);
+			else {
+				console.error("Failed to locate only one jQuery element")
+			}
 		}
 
+		//create a keyframe event handler for one keyframe.
 		helper.onKeyframeEvent = function (element,marker, callback) {
 			//if you pass in a jquery element
 			if(element.length === 1) {
@@ -54,6 +61,7 @@ var SkrollrUtilities = (function($) {
 			helper._eventHandlers.push(eventHandler);
 		};
 
+		//iterates through all event handlers created by onKeyframeEvent and combines in to one handler for skrollr
 		helper.keyframeHandlerFn = function(element, name, direction){
 			name = "data-" + name.substring(4);
 			helper._eventHandlers.forEach(function(eventHandler, index) {
@@ -69,6 +77,7 @@ var SkrollrUtilities = (function($) {
 
 //===Internal String Builders
 
+	//object to build the transform string
 	function TransformBuilder() {
 		this.transformations = [];
 		this.easing = false;
@@ -113,6 +122,7 @@ var SkrollrUtilities = (function($) {
 			}
 		},
 		ease: function(easing) {
+			//easing is applied to transform, not individual elements
 			this.easing = easing;
 		},
 		finish: function() {
@@ -121,6 +131,7 @@ var SkrollrUtilities = (function($) {
 				return "";
 			}
 
+			//always has to be the same order
 			this.transformations.sort();
 			this.trans_string = this.transformations.join(" ");
 
@@ -145,10 +156,10 @@ var SkrollrUtilities = (function($) {
 	function addKeyframe(marker, animation) {
 
 		//check the marker is valid (allow non data-tagged input)
-		if(/^(([\d]*||top||bottom||center||_offset)\-?){1,3}$/.test(marker)) {
+		if(/^(([\d]*||top||bottom||center)\-?){1,3}$/.test(marker)) {
 			marker = "data-" + marker;
 		}
-		if(!(/^data\-(([\d]*||top||bottom||center||_offset)\-?){1,3}$/.test(marker))) {
+		if(!(/^data\-(([\d]*||top||bottom||center)\-?){1,3}$/.test(marker))) {
 			console.log(marker);
 			console.error("not valid marker");
 			return;
@@ -188,6 +199,7 @@ var SkrollrUtilities = (function($) {
 					transform.ease(animation[prop]);
 					break;
 				default:
+					//all other cases eg 'background-color', 'width' etc.
 					anim_string += css(prop, animation[prop]);
 					break;
 			}
@@ -196,7 +208,7 @@ var SkrollrUtilities = (function($) {
 		$(this).attr(marker, anim_string);
 	}
 
-
+	//break down the list of keyframes in to individual keyframe. Needs everything to be aligned
 	function addKeyframes(markers, animations) {
 		var num_keyframes = markers.length;
 		for(var i = 0; i < num_keyframes; i++)
@@ -210,7 +222,7 @@ var SkrollrUtilities = (function($) {
 		}
 	}
 
-//=========EXPORT==========
+//=========EXPORT AS JQUERY FUN==========
 
 	$.fn.addKeyframe = addKeyframe;
 	$.fn.addKeyframes = addKeyframes;
