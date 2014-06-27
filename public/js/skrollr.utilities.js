@@ -70,30 +70,60 @@ var SkrollrUtilities = (function($) {
 //===Internal String Builders
 
 	function TransformBuilder() {
-		this.trans_string = "transform:";
+		this.transformations = [];
+		this.easing = false;
 	}
 
 	TransformBuilder.prototype = {
 		rotate: function(rotate_val) {
-			this.trans_string += " rotate(" + rotate_val + "deg)";
+			this.transformations.push("rotate(" + rotate_val + "deg)");
 		},
 		scale: function(scalars) {
-			this.trans_string += " scale(" + scalars[0] + "," + scalars[1] + ")";
+			this.transformations.push("scale(" + scalars[0] + "," + scalars[1] + ")");
+		},
+		scale3D: function(scalars) {
+			this.transformations.push("scale3d(" + scalars[0] + "," + scalars[1] + "," + scalars[2] + ")");
 		},
 		translate: function(vector) {
-			this.trans_string += " translate(" + vector[0] + "px," + vector[1] + "px)";
+			this.transformations.push("translate(" + vector[0] + "px," + vector[1] + "px)");
 		},
-		"rotateX": function(rotate_val) {
-			//change to css
+		translate3D: function(vector) {
+			this.transformations.push(" translate3d(" + vector[0] + "px," + vector[1] + "px," + vector[2]+"px)");
+		},
+		skew: function(skew_vals) {
+			this.transformations.push(" skew(" + skew_vals[0] + "deg," + skew_vals[1] + "deg)");
+		},
+		rotateX: function(rotate_val) {
 			if(!$('body').hasClass('no-csstransforms3d')) {
-				this.trans_string += " rotateX(" + rotate_val + "deg)";
+				this.transformations.push("rotateX(" + rotate_val + "deg)");
 			}
 		},
+		rotateY: function(rotate_val) {
+			if(!$('body').hasClass('no-csstransforms3d')) {
+				this.transformations.push(" rotateY(" + rotate_val + "deg)");
+			}
+		},
+		rotateZ: function(rotate_val) {
+			if(!$('body').hasClass('no-csstransforms3d')) {
+				this.transformations.push(" rotateZ(" + rotate_val + "deg)");
+			}
+		},
+		ease: function(easing) {
+			this.easing = easing;
+		},
 		finish: function() {
-
 			//check to see if there were any transformations
-			if(this.trans_string === "transform:") {
+			if(this.transformations.length < 1) {
 				return "";
+			}
+
+			this.transformations.sort();
+			this.trans_string = this.transformations.join(" ");
+
+			if(this.easing) {
+				this.trans_string = "transform[" + this.easing + "]:" + this.trans_string;
+			} else {
+				this.trans_string = "transform:" + this.trans_string;
 			}
 
 			this.trans_string += ";";
@@ -121,11 +151,7 @@ var SkrollrUtilities = (function($) {
 		}
 		var transform = new TransformBuilder(),
 			anim_string = "";
-
 		for(var prop in animation) {
-			if(/^\w+\[\w+\]$/.test(prop)) {
-				console.log("easing is true for " + prop);
-			}
 			switch(prop.toLowerCase()) {
 				case "translate":
 					transform.translate(animation[prop]);
@@ -138,6 +164,24 @@ var SkrollrUtilities = (function($) {
 					break;
 				case "rotatex":
 					transform.rotateX(animation[prop]);
+					break;
+				case "rotatey":
+					transform.rotateY(animation[prop]);
+					break;
+				case "rotatez":
+					transform.rotateZ(animation[prop]);
+					break;
+				case "skew":
+					transform.skew(animation[prop]);
+					break;
+				case "translate3d":
+					transform.translate3D(animation[prop]);
+					break;
+				case "scale3d":
+					transform.scale3D(animation[prop]);
+					break;
+				case "easing":
+					transform.ease(animation[prop]);
 					break;
 				default:
 					anim_string += css(prop, animation[prop]);
