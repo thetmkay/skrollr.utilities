@@ -9,7 +9,11 @@ Skrollr.Utilities will only translate JS into inline HTML defined by Skrollr syn
 
 Skrollr
 ```html
-<div id="example" data-100-top-top="background-color[linear]:rgb(255,0,0); width: 100%; transform[quadratic]: rotateY(0deg)  translate3d(0px,0px,0px) scale3d(1,1,1);" data-50-center-center="background-color[linear]:rgb(0,0,255);width:50%;transform[quadratic]: rotateY(90deg)  translate3d(50px,50px,50px) scale3d(2,2,2);" data-emit-events="true"></div>
+<div id="example" 
+data-100-top-top="background-color[linear]:rgb(255,0,0); width: 100%; transform[quadratic]: rotateY(0deg)  translate3d(0px,0px,0px) scale3d(1,1,1);"
+data-50-center-center="background-color[linear]:rgb(0,0,255);width:50%;transform[quadratic]: rotateY(90deg)  translate3d(50px,50px,50px) scale3d(2,2,2);" 
+data-emit-events="true">
+</div>
 ```
 
 ```javascript
