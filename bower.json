@@ -1,6 +1,6 @@
 {
   "name": "skrollr.utilities",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "homepage": "https://github.com/thetmkay/skrollr.utilities",
   "authors": [
     "thetmkay <george@upstatement.com>"
@@ -23,7 +23,6 @@
   ],
   "dependencies": {
     "skrollr": "~0.6.25",
-    "jquery": ">=1.*",
-    "skrollr.utilities": "~0.0.2"
+    "jquery": ">=1.*"
   }
 }
