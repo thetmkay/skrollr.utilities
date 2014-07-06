@@ -157,10 +157,10 @@ var SkrollrUtilities = (function($) {
 	function addKeyframe(marker, animation) {
 
 		//check the marker is valid (allow non data-tagged input)
-		if(/^(([\d]*||top||bottom||center)\-?){1,3}$/.test(marker)) {
+		if(/^((\d*p?||top||bottom||center)\-?){1,3}$/.test(marker)) {
 			marker = "data-" + marker;
 		}
-		if(!(/^data\-(([\d]*||top||bottom||center)\-?){1,3}$/.test(marker))) {
+		if(!(/^data\-((\d*p?||top||bottom||center)\-?){1,3}$/.test(marker))) {
 			console.log(marker);
 			console.error("not valid marker");
 			return;

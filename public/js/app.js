@@ -6,7 +6,7 @@
 		one = util.getPos(".page-three"),
 		two = util.getPos(".page-four");
 
-	$('#test').addKeyframes(["data-top-top", "data-center-center"], {
+	$('#test').addKeyframes(["data-10p-top", "data-1p-center"], {
 		'background-color[quadratic]': [util.convertHex("FF0000"),util.convertHex("0000FF")],
 		'rotateY':[0,90],
 		'scale3d':[[1,1,1],[2,2,2]],
@@ -14,7 +14,7 @@
 		'easing': ['quadratic','quadratic']
 	});
 
-	util.onKeyframeEvent($("#test"), "data-top-top", function() {
+	util.onKeyframeEvent($("#test"), "data-10p-top", function() {
 		console.log("Red");
 	});
 
